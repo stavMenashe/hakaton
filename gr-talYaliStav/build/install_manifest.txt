@@ -1,0 +1,9 @@
+/usr/local/lib/cmake/gnuradio-talYaliStav/gnuradio-talYaliStavConfig.cmake
+/usr/local/include/gnuradio/talYaliStav/api.h
+/usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/__init__.py
+/usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/theBestBlock.py
+/usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/__init__.pyc
+/usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/theBestBlock.pyc
+/usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/__init__.pyo
+/usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/theBestBlock.pyo
+/usr/local/share/gnuradio/grc/blocks/talYaliStav_theBestBlock.block.yml
