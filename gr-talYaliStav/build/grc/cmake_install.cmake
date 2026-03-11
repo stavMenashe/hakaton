@@ -43,6 +43,9 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gnuradio/grc/blocks" TYPE FILE FILES "/home/sdr/Documents/Tal_Yali_Stav/gr-talYaliStav/grc/talYaliStav_theBestBlock.block.yml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gnuradio/grc/blocks" TYPE FILE FILES
+    "/home/sdr/Documents/Tal_Yali_Stav/gr-talYaliStav/grc/talYaliStav_theBestBlock.block.yml"
+    "/home/sdr/Documents/Tal_Yali_Stav/gr-talYaliStav/grc/talYaliStav_phaseBlock.block.yml"
+    )
 endif()
 

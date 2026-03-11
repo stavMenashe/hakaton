@@ -19,7 +19,7 @@ add_subdirectory(bindings)
 ########################################################################
 # Install python sources
 ########################################################################
-gr_python_install(FILES __init__.py theBestBlock.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/talYaliStav)
+gr_python_install(FILES __init__.py theBestBlock.py phaseBlock.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/talYaliStav)
 
 ########################################################################
 # Handle the unit tests

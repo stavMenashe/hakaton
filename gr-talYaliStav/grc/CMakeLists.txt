@@ -7,4 +7,5 @@
 #
 
 install(FILES
-    talYaliStav_theBestBlock.block.yml DESTINATION share/gnuradio/grc/blocks)
+    talYaliStav_theBestBlock.block.yml
+    talYaliStav_phaseBlock.block.yml DESTINATION share/gnuradio/grc/blocks)

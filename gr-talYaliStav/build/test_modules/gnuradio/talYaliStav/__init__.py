@@ -21,4 +21,5 @@ except ModuleNotFoundError:
 
 # import any pure python here
 from .theBestBlock import theBestBlock
+from .phaseBlock import phaseBlock
 #

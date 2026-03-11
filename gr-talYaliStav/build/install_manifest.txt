@@ -2,8 +2,12 @@
 /usr/local/include/gnuradio/talYaliStav/api.h
 /usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/__init__.py
 /usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/theBestBlock.py
+/usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/phaseBlock.py
 /usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/__init__.pyc
 /usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/theBestBlock.pyc
+/usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/phaseBlock.pyc
 /usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/__init__.pyo
 /usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/theBestBlock.pyo
+/usr/local/lib/python3.12/dist-packages/gnuradio/talYaliStav/phaseBlock.pyo
 /usr/local/share/gnuradio/grc/blocks/talYaliStav_theBestBlock.block.yml
+/usr/local/share/gnuradio/grc/blocks/talYaliStav_phaseBlock.block.yml

@@ -46,6 +46,7 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3.12/dist-packages/gnuradio/talYaliStav" TYPE FILE FILES
     "/home/sdr/Documents/Tal_Yali_Stav/gr-talYaliStav/python/talYaliStav/__init__.py"
     "/home/sdr/Documents/Tal_Yali_Stav/gr-talYaliStav/python/talYaliStav/theBestBlock.py"
+    "/home/sdr/Documents/Tal_Yali_Stav/gr-talYaliStav/python/talYaliStav/phaseBlock.py"
     )
 endif()
 
@@ -53,8 +54,10 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3.12/dist-packages/gnuradio/talYaliStav" TYPE FILE FILES
     "/home/sdr/Documents/Tal_Yali_Stav/gr-talYaliStav/build/python/talYaliStav/__init__.pyc"
     "/home/sdr/Documents/Tal_Yali_Stav/gr-talYaliStav/build/python/talYaliStav/theBestBlock.pyc"
+    "/home/sdr/Documents/Tal_Yali_Stav/gr-talYaliStav/build/python/talYaliStav/phaseBlock.pyc"
     "/home/sdr/Documents/Tal_Yali_Stav/gr-talYaliStav/build/python/talYaliStav/__init__.pyo"
     "/home/sdr/Documents/Tal_Yali_Stav/gr-talYaliStav/build/python/talYaliStav/theBestBlock.pyo"
+    "/home/sdr/Documents/Tal_Yali_Stav/gr-talYaliStav/build/python/talYaliStav/phaseBlock.pyo"
     )
 endif()
 

@@ -28,12 +28,12 @@ class theBestBlock(gr.sync_block):
         self.norm_factor = norm_factor
         self.backward = False
         self.forward = False
-        self.threshold = 33
+        self.threshold = 26
         # self.flag = True
         self.pos_counter = 0
         self.neg_counter = 0
         self.last_printed = ""
-        self.stable_move = 7
+        self.stable_move = 3
 
 
     def work(self, input_items, output_items):
@@ -59,8 +59,8 @@ class theBestBlock(gr.sync_block):
         freqs = np.fft.fftshift(np.fft.fftfreq(n_fft, 1/self.fs))
 
         # 5. Compare positive vs negative frequency energy
-        pos_mask = (freqs > self.norm_factor) & (freqs <= 1.25 * self.norm_factor)
-        neg_mask = (freqs < self.norm_factor) & (freqs >= 150)
+        pos_mask = (freqs > self.norm_factor) & (freqs <= 1.175 * self.norm_factor)
+        neg_mask = (freqs < self.norm_factor) & (freqs >= 165)
 
         # 5. Energy Calculation within the windowed range
         pos_energy = np.sum(amplitudes[pos_mask])

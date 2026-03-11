@@ -45,7 +45,7 @@ blocks:
     start: '0'
     step: '1'
     stop: '100'
-    value: '50'
+    value: '0'
     widget: counter_slider
   states:
     bus_sink: false
@@ -53,7 +53,7 @@ blocks:
     bus_structure: null
     coordinate: [1152, 136.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: center_freq
   id: variable
   parameters:
@@ -78,7 +78,7 @@ blocks:
     start: '0'
     step: '1'
     stop: '30'
-    value: '15'
+    value: '30'
     widget: counter_slider
   states:
     bus_sink: false
@@ -159,7 +159,7 @@ blocks:
     bus_structure: null
     coordinate: [1272, 344.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: band_reject_filter_0
   id: band_reject_filter
   parameters:
@@ -184,7 +184,7 @@ blocks:
     bus_structure: null
     coordinate: [624, 300.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_complex_to_float_0
   id: blocks_complex_to_float
   parameters:
@@ -200,7 +200,7 @@ blocks:
     bus_structure: null
     coordinate: [1096, 352.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_multiply_const_vxx_0
   id: blocks_multiply_const_vxx
   parameters:
@@ -217,6 +217,26 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [896, 360.0]
+    rotation: 0
+    state: disabled
+- name: freq_xlating_fir_filter_xxx_0
+  id: freq_xlating_fir_filter_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    center_freq: '500'
+    comment: ''
+    decim: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate / 4
+    taps: firdes.low_pass(1, 50000, 500, 10)
+    type: ccc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [624, 568.0]
     rotation: 0
     state: enabled
 - name: low_pass_filter_1
@@ -275,7 +295,7 @@ blocks:
     comment: ''
     ctrlpanel: 'False'
     fc: '0'
-    fftsize: '32768'
+    fftsize: '16384'
     freqhalf: 'True'
     grid: 'False'
     gui_hint: ''
@@ -324,6 +344,23 @@ blocks:
     coordinate: [912, 224.0]
     rotation: 0
     state: enabled
+- name: talYaliStav_phaseBlock_0
+  id: talYaliStav_phaseBlock
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    epsilon: 1e-8
+    fs: samp_rate /  4
+    norm_factor: '0'
+    samples_len: samp_rate / 4
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [904, 568.0]
+    rotation: 0
+    state: enabled
 - name: talYaliStav_theBestBlock_0
   id: talYaliStav_theBestBlock
   parameters:
@@ -333,14 +370,14 @@ blocks:
     epsilon: 1e-8
     fs: samp_rate / 10
     norm_factor: '200'
-    samples_len: '15000'
+    samples_len: '20000'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [888, 440.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: uhd_usrp_sink_0
   id: uhd_usrp_sink
   parameters:
@@ -1058,11 +1095,15 @@ blocks:
 connections:
 - [analog_sig_source_x_0, '0', uhd_usrp_sink_0, '0']
 - [band_reject_filter_0, '0', blocks_multiply_const_vxx_0, '0']
+- [band_reject_filter_0, '0', freq_xlating_fir_filter_xxx_0, '0']
 - [band_reject_filter_0, '0', qtgui_freq_sink_x_0, '0']
 - [band_reject_filter_0, '0', talYaliStav_theBestBlock_0, '0']
 - [blocks_complex_to_float_0, '0', audio_sink_0, '0']
 - [blocks_multiply_const_vxx_0, '0', blocks_complex_to_float_0, '0']
+- [freq_xlating_fir_filter_xxx_0, '0', talYaliStav_phaseBlock_0, '0']
 - [low_pass_filter_1, '0', band_reject_filter_0, '0']
+- [low_pass_filter_1, '0', freq_xlating_fir_filter_xxx_0, '0']
+- [low_pass_filter_1, '0', qtgui_freq_sink_x_0, '0']
 - [uhd_usrp_source_0, '0', low_pass_filter_1, '0']
 
 metadata:

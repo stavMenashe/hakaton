@@ -13,8 +13,6 @@ from PyQt5 import Qt
 from gnuradio import qtgui
 from PyQt5 import QtCore
 from gnuradio import analog
-from gnuradio import audio
-from gnuradio import blocks
 from gnuradio import filter
 from gnuradio.filter import firdes
 from gnuradio import gr
@@ -69,9 +67,8 @@ class find_new_name(gr.top_block, Qt.QWidget):
         ##################################################
         self.tx_gain = tx_gain = 50
         self.samp_rate = samp_rate = 200e3
-        self.rx_gain = rx_gain = 15
+        self.rx_gain = rx_gain = 30
         self.center_freq = center_freq = 5.8e9
-        self.audio_range = audio_range = 50
 
         ##################################################
         # Blocks
@@ -80,12 +77,9 @@ class find_new_name(gr.top_block, Qt.QWidget):
         self._tx_gain_range = qtgui.Range(0, 50, 1, 50, 200)
         self._tx_gain_win = qtgui.RangeWidget(self._tx_gain_range, self.set_tx_gain, "'tx_gain'", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._tx_gain_win)
-        self._rx_gain_range = qtgui.Range(0, 30, 1, 15, 200)
+        self._rx_gain_range = qtgui.Range(0, 30, 1, 30, 200)
         self._rx_gain_win = qtgui.RangeWidget(self._rx_gain_range, self.set_rx_gain, "'rx_gain'", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._rx_gain_win)
-        self._audio_range_range = qtgui.Range(0, 100, 1, 50, 200)
-        self._audio_range_win = qtgui.RangeWidget(self._audio_range_range, self.set_audio_range, "'audio_range'", "counter_slider", float, QtCore.Qt.Horizontal)
-        self.top_layout.addWidget(self._audio_range_win)
         self.uhd_usrp_source_0 = uhd.usrp_source(
             ",".join(("", '')),
             uhd.stream_args(
@@ -115,9 +109,9 @@ class find_new_name(gr.top_block, Qt.QWidget):
         self.uhd_usrp_sink_0.set_center_freq(center_freq, 0)
         self.uhd_usrp_sink_0.set_antenna("TX/RX", 0)
         self.uhd_usrp_sink_0.set_gain(tx_gain, 0)
-        self.talYaliStav_theBestBlock_0 = talYaliStav.theBestBlock(15000, 1e-8, samp_rate / 10, 200)
+        self.talYaliStav_phaseBlock_0 = talYaliStav.phaseBlock(samp_rate / 4, 1e-8, samp_rate /  4, 0)
         self.qtgui_freq_sink_x_0 = qtgui.freq_sink_c(
-            32768, #size
+            16384, #size
             window.WIN_HAMMING, #wintype
             0, #fc
             (samp_rate / 10), #bw
@@ -167,19 +161,7 @@ class find_new_name(gr.top_block, Qt.QWidget):
                 250,
                 window.WIN_HAMMING,
                 6.76))
-        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_cc(audio_range)
-        self.blocks_complex_to_float_0 = blocks.complex_to_float(1)
-        self.band_reject_filter_0 = filter.fir_filter_ccf(
-            1,
-            firdes.band_reject(
-                1,
-                (int(samp_rate / 10)),
-                495,
-                505,
-                1,
-                window.WIN_HAMMING,
-                6.76))
-        self.audio_sink_0 = audio.sink(48000, '', True)
+        self.freq_xlating_fir_filter_xxx_0 = filter.freq_xlating_fir_filter_ccc(1, firdes.low_pass(1, 50000, 500, 10), 500, (samp_rate / 4))
         self.analog_sig_source_x_0 = analog.sig_source_c(samp_rate, analog.GR_COS_WAVE, 500, 1, 0, 0)
 
 
@@ -187,12 +169,9 @@ class find_new_name(gr.top_block, Qt.QWidget):
         # Connections
         ##################################################
         self.connect((self.analog_sig_source_x_0, 0), (self.uhd_usrp_sink_0, 0))
-        self.connect((self.band_reject_filter_0, 0), (self.blocks_multiply_const_vxx_0, 0))
-        self.connect((self.band_reject_filter_0, 0), (self.qtgui_freq_sink_x_0, 0))
-        self.connect((self.band_reject_filter_0, 0), (self.talYaliStav_theBestBlock_0, 0))
-        self.connect((self.blocks_complex_to_float_0, 0), (self.audio_sink_0, 0))
-        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.blocks_complex_to_float_0, 0))
-        self.connect((self.low_pass_filter_1, 0), (self.band_reject_filter_0, 0))
+        self.connect((self.freq_xlating_fir_filter_xxx_0, 0), (self.talYaliStav_phaseBlock_0, 0))
+        self.connect((self.low_pass_filter_1, 0), (self.freq_xlating_fir_filter_xxx_0, 0))
+        self.connect((self.low_pass_filter_1, 0), (self.qtgui_freq_sink_x_0, 0))
         self.connect((self.uhd_usrp_source_0, 0), (self.low_pass_filter_1, 0))
 
 
@@ -217,7 +196,6 @@ class find_new_name(gr.top_block, Qt.QWidget):
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
         self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
-        self.band_reject_filter_0.set_taps(firdes.band_reject(1, (int(self.samp_rate / 10)), 495, 505, 1, window.WIN_HAMMING, 6.76))
         self.low_pass_filter_1.set_taps(firdes.low_pass(1, self.samp_rate, 1e3, 250, window.WIN_HAMMING, 6.76))
         self.qtgui_freq_sink_x_0.set_frequency_range(0, (self.samp_rate / 10))
         self.uhd_usrp_sink_0.set_samp_rate(self.samp_rate)
@@ -237,13 +215,6 @@ class find_new_name(gr.top_block, Qt.QWidget):
         self.center_freq = center_freq
         self.uhd_usrp_sink_0.set_center_freq(self.center_freq, 0)
         self.uhd_usrp_source_0.set_center_freq(self.center_freq, 0)
-
-    def get_audio_range(self):
-        return self.audio_range
-
-    def set_audio_range(self, audio_range):
-        self.audio_range = audio_range
-        self.blocks_multiply_const_vxx_0.set_k(self.audio_range)
 
 
 
