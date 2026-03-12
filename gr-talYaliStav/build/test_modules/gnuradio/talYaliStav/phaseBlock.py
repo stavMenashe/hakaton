@@ -6,19 +6,21 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-
 import numpy as np
 from gnuradio import gr
+import sys
 
 class phaseBlock(gr.sync_block):
     """
-    docstring for block phaseBlock
+    Optimized block: Uses terminal emoji output to prevent 
+    GUI-related USRP overflows.
     """
     def __init__(self, samples_len, epsilon, fs, norm_factor):
         gr.sync_block.__init__(self,
             name="phaseBlock",
             in_sig=[np.complex64, ],
             out_sig=None)
+        
         self.samples_len = samples_len
         self.epsilon = epsilon
         self.fs = fs
@@ -26,7 +28,7 @@ class phaseBlock(gr.sync_block):
         self.acc_buffer = []
         self.block_rate = self.fs / self.samples_len
         self.history_size = int(self.block_rate * 8.0)
-        self.dphi_history = np.zeros(self.history_size, dtype = np.float32)
+        self.dphi_history = np.zeros(self.history_size, dtype=np.float32)
         self.history_idx = 0
         self.history_full = False
         self.last_phase = None
@@ -35,8 +37,20 @@ class phaseBlock(gr.sync_block):
         self.min_amplitude = 0.001
         self.dc_alpha = 0.95
         self.dc_offset = 0j
+        
+        # State tracking to avoid console flooding
+        # self.last_status = -1 
 
-
+    # def display_emoji(self, status):
+    #     """Prints emoji to terminal without blocking the DSP thread."""
+    #     if status != self.last_status:
+    #         # 0 = Breathing (😊), 1 = Dead (💀)
+    #         emoji = "😊" if status == 0 else "💀"
+    #         # Using sys.stdout.write is faster than print()
+    #         print(f"\rStatus: {emoji}      ")
+    #         print("")
+    #         self.last_status = status
+        
     def work(self, input_items, output_items):
         in0 = input_items[0]
         
@@ -60,9 +74,8 @@ class phaseBlock(gr.sync_block):
                 continue
             
             self.dc_offset = self.dc_alpha * self.dc_offset + (1 - self.dc_alpha) * block_mean
-            centered_mean = block_mean - self.dc_offset
-            
             current_phase = np.angle(block_mean)
+            
             if self.last_phase is None:
                 self.last_phase = current_phase
                 continue
@@ -86,13 +99,36 @@ class phaseBlock(gr.sync_block):
                 breath_mask = (phase_freqs >= 0.15) & (phase_freqs <= 0.6)
                 breath_total_energy = np.sum(phase_fft[breath_mask])
                 
-                print("*")
+                print("Scanning...")
                 if breath_total_energy > self.breath_threshold:
                     self.breath_stable_cnt += 1
-
                     if self.breath_stable_cnt >= 3:
-                        print(f"Breathing detected! (Energy: {breath_total_energy: .3f})")
+                        print(f"Breathing detected! (Energy: {breath_total_energy: .3f})") 
+                        print("""
+                        Human detected
+
+                        _______
+                        /           \\
+                        |  ^   ^     |
+                        |   ___      |
+                        |  \\___/    |
+                        \\_______/
+                            | |
+                        __| |__
+                        """)
                         self.breath_stable_cnt = 0
-                    
+                else:
+                    print("""
+                    No sign of life in this room
+
+                    _______
+                    /          \\
+                    |  x   x     |
+                    |    -       |
+                    |   ___      |
+                    \\_______/
+                        | |
+                    __| |__
+                    """)  
     
         return len(in0)
