@@ -38,19 +38,6 @@ class phaseBlock(gr.sync_block):
         self.dc_alpha = 0.95
         self.dc_offset = 0j
         
-        # State tracking to avoid console flooding
-        # self.last_status = -1 
-
-    # def display_emoji(self, status):
-    #     """Prints emoji to terminal without blocking the DSP thread."""
-    #     if status != self.last_status:
-    #         # 0 = Breathing (😊), 1 = Dead (💀)
-    #         emoji = "😊" if status == 0 else "💀"
-    #         # Using sys.stdout.write is faster than print()
-    #         print(f"\rStatus: {emoji}      ")
-    #         print("")
-    #         self.last_status = status
-        
     def work(self, input_items, output_items):
         in0 = input_items[0]
         
