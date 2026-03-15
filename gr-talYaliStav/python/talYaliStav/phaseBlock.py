@@ -5,16 +5,14 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
+# Detecting Breathing using radio waves.
+#
 
 import numpy as np
 from gnuradio import gr
 import sys
 
 class phaseBlock(gr.sync_block):
-    """
-    Optimized block: Uses terminal emoji output to prevent 
-    GUI-related USRP overflows.
-    """
     def __init__(self, samples_len, epsilon, fs, norm_factor):
         gr.sync_block.__init__(self,
             name="phaseBlock",
@@ -37,6 +35,7 @@ class phaseBlock(gr.sync_block):
         self.min_amplitude = 0.001
         self.dc_alpha = 0.95
         self.dc_offset = 0j
+        
         
     def work(self, input_items, output_items):
         in0 = input_items[0]
